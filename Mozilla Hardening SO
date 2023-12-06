@@ -1,0 +1,501 @@
+#!/bin/bash
+
+# Directorio de instalación de Firefox
+firefox_installation_dir="/ruta/de/tu/instalacion/Firefox"
+
+# Verificar si existe el directorio de instalación de Firefox
+if [ -d "$firefox_installation_dir" ]; then
+    # Crear el contenido para local-settings.js
+    settings_content='pref("general.config.obscure_value", 0);
+pref("general.config.filename", "mozilla.cfg");'
+
+    # Crear el archivo local-settings.js en el directorio defaults/pref
+    echo "$settings_content" > "$firefox_installation_dir/defaults/pref/local-settings.js"
+    echo "Archivo local-settings.js creado correctamente."
+else
+    echo "Directorio de instalación de Firefox no encontrado."
+fi
+
+# Script para proteger los binarios de Firefox
+
+# Ubicación de instalación compartida de Firefox
+firefox_shared_dir="/ruta/compartida/Firefox"
+
+echo "Verificando la ubicación de la instalación de Firefox..."
+
+# Verificar si existe la ubicación compartida de Firefox
+if [ -d "$firefox_shared_dir" ]; then
+    echo "La ubicación compartida de Firefox existe."
+    echo "¡La instalación de Firefox ya está protegida!"
+else
+    echo "La ubicación compartida de Firefox no existe."
+
+    # Crear la ubicación compartida de Firefox si no existe
+    sudo mkdir -p "$firefox_shared_dir"
+    sudo chown root:root "$firefox_shared_dir"
+    sudo chmod 755 "$firefox_shared_dir"
+
+    echo "Ubicación compartida creada y protegida."
+fi
+
+# Este script establece los permisos en el archivo mozilla.cfg para restringir su modificación o eliminación a solo administradores.
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+echo "Estableciendo permisos en mozilla.cfg..."
+
+# Verificar si el archivo existe
+if [ -f "$mozilla_cfg" ]; then
+    # Establecer permisos para que solo el administrador pueda modificar o borrar el archivo
+    sudo chown root:root "$mozilla_cfg"
+    sudo chmod 644 "$mozilla_cfg"
+    sudo chmod u-w "$mozilla_cfg"
+
+    echo "Permisos establecidos en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script configura Firefox para habilitar las actualizaciones automáticas.
+
+echo "Configurando actualizaciones automáticas en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"app.update.enabled\", true);
+lockPref(\"app.update.auto\", true);
+lockPref(\"app.update.staging.enabled\", true);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Actualizaciones automáticas configuradas en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+
+# Este script configura el comportamiento de actualización de proveedores de búsqueda en Firefox.
+
+echo "Configurando actualización de proveedores de búsqueda en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"browser.search.update\", true);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Comportamiento de actualización de proveedores de búsqueda configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script configura el intervalo de tiempo entre verificaciones de actualizaciones en Firefox.
+
+echo "Configurando el intervalo de tiempo entre verificaciones de actualizaciones en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"app.update.interval\", 43200);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Intervalo de tiempo entre verificaciones de actualizaciones configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script configura el tiempo de espera antes de mostrar el diálogo de actualización en Firefox.
+
+echo "Configurando el tiempo de espera antes de mostrar el diálogo de actualización en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"app.update.promptWaitTime\", 172800);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Tiempo de espera antes del diálogo de actualización configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+# Este script desactiva la precarga de red en Firefox.
+
+echo "Configurando la desactivación de Network Prefetch en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"Network.dns.disablePrefetch\", true);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Network Prefetch desactivado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script deshabilita NTLM v1 en Firefox.
+
+echo "Configurando la deshabilitación de NTLM v1 en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"network.auth.force-generic-ntlm-v1\", false);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "NTLM v1 deshabilitado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script deshabilita WebRTC en Firefox.
+
+echo "Configurando la deshabilitación de WebRTC en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="
+lockPref(\"media.peerconnection.enabled\", false);
+lockPref(\"media.peerconnection.use_document_iceservers\", false);
+"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "WebRTC ha sido deshabilitado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Este script habilita la visualización de Punycode en Firefox para los Internationalized Domain Names (IDNs).
+
+echo "Configurando la visualización de Punycode en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"network.IDN_show_punycode\", true);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La visualización de Punycode ha sido habilitada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para establecer la política de origen estricta para los URI de archivo en Firefox
+
+echo "Configurando la política de origen estricta para URI de archivo en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.fileuri.strict_origin_policy\", true);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La política de origen estricta para URI de archivo ha sido configurada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para bloquear contenido activo mixto en Firefox
+
+echo "Configurando bloqueo de contenido activo mixto en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.mixed_content.block_active_content\", true);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El bloqueo de contenido activo mixto ha sido configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar la política de respuesta OCSP en Firefox
+
+echo "Configurando la política de respuesta OCSP en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.ocsp.require\", true);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La política de respuesta OCSP ha sido configurada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar la política de uso de OCSP en Firefox
+
+echo "Configurando la política de uso de OCSP en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.OCSP.enabled\", 1);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La política de uso de OCSP ha sido configurada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar la versión máxima del protocolo TLS en Firefox
+
+echo "Configurando la versión máxima del protocolo TLS en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.tls.version.max\", 3);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La versión máxima del protocolo TLS ha sido configurada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar la versión mínima del protocolo TLS en Firefox
+
+echo "Configurando la versión mínima del protocolo TLS en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"security.tls.version.min\", 3);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La versión mínima del protocolo TLS ha sido configurada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar el comportamiento de anulación de SSL en Firefox
+
+echo "Configurando el comportamiento de anulación de SSL en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"browser.ssl_override_behavior\", 0);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El comportamiento de anulación de SSL ha sido configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar el bloqueador de ventanas emergentes en Firefox
+
+echo "Configurando el bloqueador de ventanas emergentes en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"privacy.popups.policy\", 1);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El bloqueador de ventanas emergentes ha sido configurado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar el cierre de ventanas del navegador mediante scripts en Firefox
+
+echo "Configurando el comportamiento de cierre de ventanas en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"dom.allow_scripts_to_close_windows\", false);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El cierre de ventanas mediante scripts ha sido deshabilitado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para desactivar la visualización de URLs de JavaScript en el historial de Firefox
+
+echo "Configurando la visualización de URLs de JavaScript en el historial de Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"browser.urlbar.filter.javascript\", true);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La visualización de URLs de JavaScript en el historial ha sido desactivada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar el movimiento o redimensionamiento de ventanas a través de scripts en Firefox
+
+echo "Configurando el movimiento o redimensionamiento de ventanas en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"dom.disable_window_move_resize\", false);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El movimiento o redimensionamiento de ventanas ha sido deshabilitado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar la elevación o reducción de ventanas a través de scripts en Firefox
+
+echo "Configurando la elevación o reducción de ventanas en Firefox..."
+
+# Ruta al archivo mozilla.cfg
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+# Contenido a añadir en mozilla.cfg
+content="lockPref(\"dom.disable_window_flip\", false);"
+
+# Verificar si el archivo mozilla.cfg existe y añadir la configuración
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La elevación o reducción de ventanas ha sido deshabilitada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para configurar la página de Nueva Pestaña en Firefox deshabilitando las sugerencias de historial
+
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+content="
+lockPref(\"browser.urlbar.suggest.history\", false);
+lockPref(\"browser.newtabpage.activity-stream.feeds.topsites\", false);
+lockPref(\"browser.newtabpage.activity-stream.feeds.snippets\", false);
+lockPref(\"browser.newtabpage.activity-stream.feeds.section.topstories\", false);
+lockPref(\"browser.newtabpage.activitystream.section.highlights.includePocket\", false);
+lockPref(\"browser.newtabpage.activity-stream.feeds.section.highlights\", false);
+"
+
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La configuración de la página de Nueva Pestaña ha sido actualizada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar el inicio de sesión en Firefox
+
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+content="
+lockPref(\"identity.fxaccounts.enabled\", false);
+"
+
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "El inicio de sesión en Firefox ha sido deshabilitado en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar los estudios de Shield en Firefox
+
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+content="
+lockPref(\"app.shield.optoutstudies.enabled\", true);
+"
+
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "Los estudios de Shield en Firefox han sido deshabilitados en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
+# Script para deshabilitar la asistencia de rellenado de formularios en Firefox
+
+mozilla_cfg="/ruta/a/mozilla.cfg"
+
+content="
+lockPref(\"browser.formfill.enable\", false);
+"
+
+if [ -f "$mozilla_cfg" ]; then
+    echo "$content" | sudo tee -a "$mozilla_cfg" > /dev/null
+    echo "La asistencia de rellenado de formularios en Firefox ha sido deshabilitada en mozilla.cfg."
+else
+    echo "El archivo mozilla.cfg no se encontró en la ruta especificada."
+fi
+
