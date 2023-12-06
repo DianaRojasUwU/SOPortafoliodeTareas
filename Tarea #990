@@ -1,0 +1,20 @@
+import subprocess
+
+def ejecutar_comando_seguro(comando):
+    # Lista blanca de comandos permitidos
+    comandos_permitidos = ["ls", "pwd", "echo", "cat"]
+    
+    if comando.split()[0] in comandos_permitidos:
+        # Ejecutar el comando dentro del "jail"
+        try:
+            resultado = subprocess.check_output(comando, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+            return resultado
+        except subprocess.CalledProcessError as e:
+            return f"Error al ejecutar el comando: {e.output}"
+    else:
+        return "Comando no permitido dentro del jail"
+
+# Ejemplos de uso
+print(ejecutar_comando_seguro("ls -l"))
+print(ejecutar_comando_seguro("cat archivo.txt"))
+print(ejecutar_comando_seguro("rm -rf /"))
